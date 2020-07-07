@@ -1,0 +1,3 @@
+[submodule "ftparser"]
+	path = ftparser
+	url = https://github.com/FlexxxerAlex/ftparser
