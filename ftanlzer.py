@@ -9,11 +9,11 @@ import configparser
 from json import loads
 
 def get_supported_programs():
-    ftparser = subprocess.run([sys.executable, 'ftparser/ftparser.py', '--spn'], stdout=subprocess.PIPE)
+    ftparser = subprocess.run([sys.executable, sys.path[0] + '/ftparser/ftparser.py', '--spn'], stdout=subprocess.PIPE)
     return ftparser.stdout.decode('ascii')
 
 def get_frametimes(logfile, programname):
-    ftparser = subprocess.run([sys.executable, 'ftparser/ftparser.py', '-f', logfile, '-p', programname, '--allframes'], stdout=subprocess.PIPE)
+    ftparser = subprocess.run([sys.executable, sys.path[0] + '/ftparser/ftparser.py', '-f', logfile, '-p', programname, '--allframes'], stdout=subprocess.PIPE)
     content = ftparser.stdout.decode('ascii')
     parser = configparser.ConfigParser()
     parser.read_file(io.StringIO(content))
