@@ -109,13 +109,13 @@ if argslist.isprobabilitydensitygraph:
 if argslist.isprobabilitydistributiongraph:
     graph_data = list()
     time_from_start = 0.0
-    total_test_time = sum(frametimes)
+    total_test_time = sum(frametimes) / 1000.0
 
-    for frametime in sorted(frametimes):
+    for frametime in sorted(frametimes, reverse=True):
         if frametime == 0:
             continue
 
-        time_from_start + frametime
+        time_from_start += frametime
         graph_data.append((1000.0 / frametime, time_from_start / total_test_time / 10.0))
 
     graphs_data['probability distribution graph'] = dict(data=graph_data)
