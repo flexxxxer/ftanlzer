@@ -2,11 +2,15 @@
 import os
 import io
 import sys
+import math
 import argparse
 import subprocess
 import configparser
 
 from json import loads
+
+def round_of_rating(number):
+    return round(number * 2) / 2
 
 def get_supported_programs():
     ftparser = subprocess.run([sys.executable, sys.path[0] + '/ftparser/ftparser.py', '--spn'], stdout=subprocess.PIPE)
@@ -88,12 +92,14 @@ if argslist.isprobabilitydensitygraph:
     values = {}
 
     for frametime in frametimes[(1 if frametimes[0] == 0 else 0):]:
-        if frametime in values:
-            values[frametime] += frametime
-        else:
-            values[frametime] = frametime
+        frametime_rating = round_of_rating(frametime)
 
-    graph_data = list((0 if k == 0 else 1000.0 / k, v) for k, v in sorted(values.items(), key=lambda kv: kv[0]))
+        if frametime_rating in values:
+            values[frametime_rating] += frametime_rating
+        else:
+            values[frametime_rating] = frametime_rating
+
+    graph_data = list((0 if k == 0 else 1000.0 / k, v) for k, v in sorted(values.items(), key=lambda kv: kv[0], reverse=True))
     min = min(graph_data)[0]
 
     graph_data = [(min - 1.0, 0)] + graph_data
