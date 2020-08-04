@@ -16,6 +16,10 @@ def get_supported_programs():
     ftparser = subprocess.run([sys.executable, sys.path[0] + '/ftparser/ftparser.py', '--spn'], stdout=subprocess.PIPE)
     return ftparser.stdout.decode('ascii')
 
+def get_statistics(file, programname):
+    ftparser = subprocess.run([sys.executable, sys.path[0] + '/ftparser/ftparser.py', '-f', file, '-p', programname], stdout=subprocess.PIPE)
+    return ftparser.stdout.decode('ascii')
+
 def get_frametimes(logfile, programname):
     ftparser = subprocess.run([sys.executable, sys.path[0] + '/ftparser/ftparser.py', '-f', logfile, '-p', programname, '--allframes'], stdout=subprocess.PIPE)
     content = ftparser.stdout.decode('ascii')
@@ -38,6 +42,7 @@ argParser.add_argument('--spn', dest='supportedprograms', help='supported record
 argParser.add_argument('--ftg', dest='isframetiminggraph', help='generate frame timing graph data', action='store_true', default=False)
 argParser.add_argument('--pdensg', dest='isprobabilitydensitygraph', help='generate probability density graph data', action='store_true', default=False)
 argParser.add_argument('--pdistg', dest='isprobabilitydistributiongraph', help='generate probability distribution graph data', action='store_true', default=False)
+argParser.add_argument('--stat', dest='getstat', help='generate only frametime statistics', action='store_true', default=False)
 
 argslist = argParser.parse_args()
 
@@ -66,6 +71,10 @@ if not os.path.isfile(argslist.logfile):
     else:
         errprint()
 
+    sys.exit()
+
+if argslist.getstat:
+    print(get_statistics(argslist.logfile, argslist.pname))
     sys.exit()
 
 # if no one graph data not specified
